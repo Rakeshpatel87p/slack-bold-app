@@ -1,31 +1,27 @@
-const { App } = require("@slack/bolt");
-const dotenv = require("dotenv").config();
-
-// Initializes your app with your bot token and signing secret
-const app = new App({
-  token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
-});
+const { app } = require("./index");
+const { startChallengeBlock } = require("./content/startChallengeBlock");
 
 // Listens to incoming messages that contain "hello"
-app.message("hello", async ({ message, say, context }) => {
+app.message("workout", async ({ message, say, context }) => {
   // say() sends a message to the channel where the event was triggered
-  await say(`Hey there <@${message.user}>!`);
-  await app.client.chat.postMessage({
+  await say(`Hey there <@${message.user}>! We need to chat`);
+  //exerciseIntroPrompt(message, context);
+});
+
+function exerciseIntroPrompt(message, context) {
+  app.client.chat.postMessage({
     channel: message.user,
     token: context.botToken,
-    text: "Hey man, I can help out with that. Shall I proceed?",
+    text:
+      "Great first step!! Do you want to take part in the push-up challenge?",
+    blocks: startChallengeBlock.prompt,
   });
-});
+}
 
-app.message("workout", async ({ message, say }) => {
-  console.log(message);
-  //await say("Did somebody mention exercise?");
-});
-
-(async () => {
-  // Start your app
-  await app.start(process.env.PORT || 3000);
-
-  console.log("⚡️ Bolt app is running!");
-})();
+//Not Working
+// app.action("start-challenge", async ({ ack, say }) => {
+//   console.log("action received");
+//   // Acknowledge action request
+//   await ack();
+//   await say("Request approved 👍");
+// });
