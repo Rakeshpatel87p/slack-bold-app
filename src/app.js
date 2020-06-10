@@ -18,7 +18,7 @@ function exerciseIntroPrompt(message, context) {
   });
 }
 
-//Not Working
+//Not Working - figure out why; responding to use btn clicks.
 // app.action("start-challenge", async ({ ack, say }) => {
 //   console.log("action received");
 //   // Acknowledge action request
